@@ -1,18 +1,28 @@
-/* ---------- logos (swap in official SVGs if you like) ---------- */
-export const PolygonLogo = () => (
-  <svg viewBox="0 0 38 33" className="h-9 w-9" fill="#8247E5">
-    <path d="M28.8 10.1a2.4 2.4 0 0 0-2.4 0l-5.6 3.3-3.8 2.1-5.6 3.3a2.4 2.4 0 0 1-2.4 0l-4.4-2.6a2.4 2.4 0 0 1-1.2-2.1V9.9c0-.9.4-1.7 1.2-2.1l4.4-2.5a2.4 2.4 0 0 1 2.4 0l4.4 2.5c.8.4 1.2 1.2 1.2 2.1v3.300l3.800-2.200V7.700c0-.9-.4-1.700-1.200-2.100L13.400.4a2.400 2.400 0 0 0-2.400 0L2.200 5.600C1.400 6 1 6.800 1 7.700v10.300c0 .9.4 1.700 1.200 2.100l8.800 5.100a2.400 2.400 0 0 0 2.400 0l5.600-3.200 3.800-2.200 5.600-3.200a2.400 2.400 0 0 1 2.400 0l4.400 2.500c.8.4 1.200 1.200 1.200 2.100v5c0 .9-.4 1.700-1.200 2.100l-4.400 2.600a2.400 2.400 0 0 1-2.400 0l-4.400-2.500a2.400 2.400 0 0 1-1.200-2.100v-3.200l-3.800 2.200v3.200c0 .9.4 1.700 1.200 2.100l8.800 5.100a2.400 2.400 0 0 0 2.400 0l8.800-5.100c.8-.4 1.200-1.200 1.200-2.100V20c0-.9-.4-1.700-1.200-2.100z" transform="scale(.9) translate(1 1)" />
-  </svg>
-);
-export const CharmLogo = () => (
-  <svg viewBox="0 0 100 100" className="h-9 w-9" fill="#1fdcc0">
-    <path d="M10 28 L48 8 Q56 5 56 14 V40 L26 57 L56 74 L28 90 Q18 94 10 86 Z" transform="scale(.8) translate(12 12)" />
-    <path d="M90 72 L52 92 Q44 95 44 86 V60 L74 43 L44 26 L72 10 Q82 6 90 14 Z" transform="scale(.8) translate(12 12)" />
-  </svg>
-);
-export const DiscordLogo = () => (
-  <svg viewBox="0 0 24 24" className="h-9 w-9" fill="#5865F2">
-    <path d="M20.3 4.4A19 19 0 0 0 15.6 3l-.2.5a17 17 0 0 0-4.8 0L10.4 3a19 19 0 0 0-4.7 1.4C2.7 8.800 1.900 13.100 2.300 17.300a19 19 0 0 0 5.800 2.900l1.200-2c-.7-.2-1.300-.6-1.900-1l.5-.4a13.600 13.600 0 0 0 11.600 0l.5.4c-.6.400-1.200.8-1.900 1l1.200 2a19 19 0 0 0 5.800-2.900c.5-4.900-.8-9.200-3.100-12.900ZM9.500 14.700c-1 0-1.800-.9-1.800-2s.8-2 1.800-2 1.800.9 1.800 2-.8 2-1.800 2Zm5 0c-1 0-1.800-.9-1.800-2s.8-2 1.800-2 1.800.9 1.800 2-.8 2-1.800 2Z" />
+// Clean, self-drawn marks. To use official brand assets, replace these three components with their SVGs.
+export const CharmLogo = ({ className = "" }) => (
+  <svg viewBox="230 245 590 590" className={className} aria-hidden="true">
+    <g fill="#1fdcc0" stroke="#1fdcc0" strokeWidth="16" strokeLinejoin="round">
+      <path d="M540 291Q565 295 565 315V430L398 527L524 599L385 679Q370 688 355 679L305 648Q293 640 293 622V440Q293 420 312 411Z" />
+      <path transform="rotate(180 524.5 539.5)" d="M540 291Q565 295 565 315V430L398 527L524 599L385 679Q370 688 355 679L305 648Q293 640 293 622V440Q293 420 312 411Z" />
+    </g>
   </svg>
 );
 
+const hex = (cx, cy, r) =>
+  [[cx, cy - r], [cx + 0.866 * r, cy - r / 2], [cx + 0.866 * r, cy + r / 2], [cx, cy + r], [cx - 0.866 * r, cy + r / 2], [cx - 0.866 * r, cy - r / 2]]
+    .map((p) => p.join(",")).join(" ");
+
+export const PolygonLogo = ({ className = "" }) => (
+  <svg viewBox="0 0 48 48" className={className} aria-hidden="true" fill="none" stroke="#8247E5" strokeWidth="4.2" strokeLinejoin="round">
+    <polygon points={hex(18, 19, 11)} />
+    <polygon points={hex(30, 29, 11)} />
+  </svg>
+);
+
+export const DiscordLogo = ({ className = "" }) => (
+  <svg viewBox="0 0 48 48" className={className} aria-hidden="true">
+    <path fill="#5865F2" d="M9 14Q9 10 13 9L18 7.500Q24 6.500 30 7.500L35 9Q39 10 39 14L41 31Q41 35 37.500 37L31 39.500L29 36.500Q24 37.500 19 36.500L17 39.500L10.500 37Q7 35 7 31Z" />
+    <ellipse cx="18" cy="23.500" rx="3.600" ry="4.300" fill="#fff" />
+    <ellipse cx="30" cy="23.500" rx="3.600" ry="4.300" fill="#fff" />
+  </svg>
+);
