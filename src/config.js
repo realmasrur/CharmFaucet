@@ -2,9 +2,11 @@ import { JsonRpcProvider } from "ethers";
 
 export const TOKEN = "0xc00583c4c8e8eed451cb827809dfe7f011477350";
 export const FAUCET = import.meta.env.VITE_FAUCET_ADDRESS || "0x0000000000000000000000000000000000000000";
-export const DISCORD_INVITE = import.meta.env.VITE_DISCORD_INVITE || "https://discord.gg/";
+export const DISCORD_INVITE = import.meta.env.VITE_DISCORD_INVITE || "https://discord.com";
+export const TURNSTILE_SITEKEY = import.meta.env.VITE_TURNSTILE_SITEKEY || "1x00000000000000000000AA"; // Cloudflare test key (always passes)
 export const RPC = import.meta.env.VITE_POLYGON_RPC || "https://polygon-rpc.com";
 export const API = "https://polygon.blockscout.com/api/v2";
+export const SITE = typeof window !== "undefined" ? window.location.origin : "";
 
 export const POLYGON = {
   chainId: "0x89",
@@ -19,6 +21,7 @@ export const FAUCET_ABI = [
   "function claimed(address) view returns (bool)",
   "function amount() view returns (uint256)",
 ];
+export const ERC20_ABI = ["function decimals() view returns (uint8)"];
 
 export const read = new JsonRpcProvider(RPC);
 export const short = (a) => `${a.slice(0, 6)}…${a.slice(-4)}`;
