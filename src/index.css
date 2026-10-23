@@ -2,5 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Keep the light design even when a phone/browser forces dark mode, and never flash plain white. */
+:root { color-scheme: light only; }
+html, body { background: #ffffff; min-height: 100%; margin: 0; }
 html { -webkit-tap-highlight-color: transparent; }
 button, a { touch-action: manipulation; }
