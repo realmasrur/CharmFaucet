@@ -47,10 +47,10 @@ export default function Gate({ children }) {
 
   if (ok) return children;
   return (
-    <section className="mx-auto mt-10 w-full max-w-sm rounded-[32px] bg-white/80 p-8 text-center shadow-[0_30px_60px_-20px_rgba(30,30,60,0.25)] ring-1 ring-white backdrop-blur">
+    <section className="w-full max-w-xs text-center">
       <CharmLogo className="mx-auto h-14 w-14" />
-      <h1 className="mt-4 font-sans text-xl font-bold text-neutral-900">Quick check before you claim</h1>
-      <p className="mt-1 text-sm text-neutral-500">Confirm you're not a robot to open the faucet.</p>
+      <h1 className="mt-5 text-xl font-bold text-neutral-900">Quick check</h1>
+      <p className="mt-1 text-sm text-neutral-500">Confirm you're not a robot to continue.</p>
       <div ref={box} className="mt-6 flex min-h-[70px] justify-center" />
       {err && <p role="alert" className="mt-3 text-sm text-red-600">{err}</p>}
     </section>
