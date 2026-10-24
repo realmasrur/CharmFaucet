@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { TURNSTILE_SITEKEY } from "../config";
-import { CharmLogo } from "./Logos";
+import Logo from "./Logo";
 
 const SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 const loadScript = () =>
@@ -48,7 +48,7 @@ export default function Gate({ children }) {
   if (ok) return children;
   return (
     <section className="w-full max-w-xs text-center">
-      <CharmLogo className="mx-auto h-14 w-14" />
+      <Logo className="mx-auto h-14 w-14" />
       <h1 className="mt-5 text-xl font-bold text-neutral-900">Quick check</h1>
       <p className="mt-1 text-sm text-neutral-500">Confirm you're not a robot to continue.</p>
       <div ref={box} className="mt-6 flex min-h-[70px] justify-center" />
