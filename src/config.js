@@ -6,6 +6,8 @@ const envFaucet = (import.meta.env.VITE_FAUCET_ADDRESS || "").trim();
 export const FAUCET = isAddress(envFaucet.toLowerCase()) ? envFaucet.toLowerCase() : DEFAULT_FAUCET.toLowerCase();
 
 export const TURNSTILE_SITEKEY = import.meta.env.VITE_TURNSTILE_SITEKEY || "1x00000000000000000000AA"; // Cloudflare test key
+export const API = "https://polygon.blockscout.com/api/v2";
+export const SITE = typeof window !== "undefined" ? window.location.origin : "";
 export const RPC = import.meta.env.VITE_POLYGON_RPC || "https://polygon-rpc.com";
 
 export const POLYGON = {
@@ -21,5 +23,5 @@ export const FAUCET_ABI = [
   "function claimed(address) view returns (bool)",
   "function amount() view returns (uint256)",
 ];
-export const ERC20_ABI = ["function balanceOf(address) view returns (uint256)"];
+export const ERC20_ABI = ["function balanceOf(address) view returns (uint256)", "function decimals() view returns (uint8)"];
 export const short = (a) => `${a.slice(0, 6)}…${a.slice(-4)}`;
