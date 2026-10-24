@@ -8,7 +8,7 @@ charm-faucet/
 ├─ contracts/CharmFaucet.sol
 ├─ api/verify.js                 Vercel function (Turnstile check)
 ├─ functions/api/verify.js       Cloudflare Pages function (Turnstile check)
-├─ public/  favicon.svg  charm-logo.png (wallet icon)  og.png (share preview 1200x630)
+├─ public/  logo.png (logo, favicon, wallet icon)  og.png or og.jpg (share preview 1200x630)
 ├─ src/
 │  ├─ main.jsx  App.jsx  config.js  index.css
 │  └─ components/  Gate  Hex  Legal  Logos  PixelAvatar
