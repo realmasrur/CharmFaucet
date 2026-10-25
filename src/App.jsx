@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { BrowserProvider, Contract, formatUnits } from "ethers";
+import { BrowserProvider, Contract, formatUnits, id } from "ethers";
 import { TOKEN, FAUCET, POLYGON, FAUCET_ABI, ERC20_ABI, API, SITE, short } from "./config";
 import Logo from "./components/Logo";
 import PixelAvatar from "./components/PixelAvatar";
@@ -38,17 +38,32 @@ function Faucet() {
   const busy = status?.state === "working";
   const [recent, setRecent] = useState(null);
 
+  const [recentErr, setRecentErr] = useState(false);
   const loadRecent = useCallback(async () => {
-    try {
-      const r = await (await fetch(`${API}/addresses/${FAUCET}/token-transfers?type=ERC-20&filter=from`)).json();
-      const fetched = (r.items || [])
-        .filter((x) => (x.token?.address_hash || x.token?.address || TOKEN).toLowerCase() === TOKEN && x.to?.hash)
-        .map((x) => ({
-          to: x.to.hash, tx: x.transaction_hash ?? x.tx_hash, time: x.timestamp,
-          amt: Number(formatUnits(x.total?.value ?? "0", x.total?.decimals ?? x.token?.decimals ?? 18)).toLocaleString(undefined, { maximumFractionDigits: 2 }),
-        }));
-      setRecent((prev) => [...(prev || []).filter((p) => p.local && !fetched.some((f) => f.tx === p.tx)), ...fetched].slice(0, 6));
-    } catch { setRecent((prev) => prev ?? []); }
+    const get = async (u) => { const r = await fetch(u); if (!r.ok) throw new Error(String(r.status)); return r.json(); };
+    const sel = id("claim()").slice(0, 10);
+    let fetched = [], reached = false;
+    try { // 1) successful claim() transactions sent to the faucet
+      const r = await get(`${API}/addresses/${FAUCET}/transactions`);
+      reached = true;
+      fetched = (r.items || [])
+        .filter((x) => (x.status === "ok" || x.result === "success") && x.from?.hash && (x.method === "claim" || (x.raw_input || "").toLowerCase().startsWith(sel)))
+        .map((x) => ({ to: x.from.hash, tx: x.hash, time: x.timestamp, amt: "50" }));
+    } catch {}
+    if (!fetched.length) {
+      try { // 2) fallback: CHARM transfers out of the faucet
+        const r = await get(`${API}/addresses/${FAUCET}/token-transfers?type=ERC-20`);
+        reached = true;
+        fetched = (r.items || [])
+          .filter((x) => x.from?.hash?.toLowerCase() === FAUCET && x.to?.hash && (x.token?.address_hash || x.token?.address || TOKEN).toLowerCase() === TOKEN)
+          .map((x) => ({
+            to: x.to.hash, tx: x.transaction_hash ?? x.tx_hash, time: x.timestamp,
+            amt: Number(formatUnits(x.total?.value ?? "0", x.total?.decimals ?? x.token?.decimals ?? 18)).toLocaleString(undefined, { maximumFractionDigits: 2 }),
+          }));
+      } catch {}
+    }
+    setRecentErr(!reached);
+    setRecent((prev) => [...(prev || []).filter((p) => p.local && !fetched.some((f) => f.tx === p.tx)), ...fetched].slice(0, 6));
   }, []);
   useEffect(() => { loadRecent(); const id = setInterval(loadRecent, 30000); return () => clearInterval(id); }, [loadRecent]);
 
@@ -156,7 +171,11 @@ function Faucet() {
         <h2 className="text-xs font-semibold uppercase tracking-wider text-neutral-400">Recent claims</h2>
         <ul className="mt-3 divide-y divide-neutral-100" aria-live="polite">
           {recent === null && <li className="py-3 text-sm text-neutral-400">Loading…</li>}
-          {recent?.length === 0 && <li className="py-3 text-sm text-neutral-400">No claims yet.</li>}
+          {recent?.length === 0 && (
+            <li className="py-3 text-sm text-neutral-400">
+              {recentErr ? <>Couldn't load history. <button onClick={loadRecent} className="underline">Retry</button></> : "No claims yet."}
+            </li>
+          )}
           {recent?.map((r) => (
             <li key={r.tx}>
               <a href={`https://polygonscan.com/tx/${r.tx}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 py-2.5 text-sm transition hover:opacity-70">
